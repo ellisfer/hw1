@@ -8,47 +8,62 @@ will receive no credit for non-recursive solutions.
 To test your program write a separate .cpp file and #include
 split.h.  **Do NOT add main() to this file**.  When you submit
 the function below should be the only one in this file.
-*/
+*/ 
 
 #include "split.h"
+using namespace std;
 
 /* Add a prototype for a helper function here if you need */
 
 void split(Node*& in, Node*& odds, Node*& evens)
 {
-  /* Add code here */
-// WRITE YOUR CODE HERE
-
-  // if value even
-  if(in->value%2 == 0){
-    if(evens == nullptr){
-      evens = in;
-    }
-    else{
-      evens.next = in;
-    }
-    in = in->next;
-    evens = even->next;
-    split(nextin, odds, evens);
-  }
-
-  // if value odd
-    if(in->value%2 == 1){
-      if(odds == nullptr){
-        odds = in;
-      }
-      else{
-        odds.next = in;
-      }
-      in = in->next;
-      odds = odds->next;
-      split(in, odds, evens);
-    }
-
-  if(in->next == nullptr){
+  // if get to end of in, return -- base case
+  if(in == nullptr){ 
     return;
   }
-  // go all the way to end, so then working backwards
+
+  // storing next node in input
+  Node* inNext = in->next;
+
+  // if even
+  if(in->value %2 == 0){
+    Node* temp = evens;
+    addNode(in, evens, temp);
+  }
+
+  // if odd
+  if(in->value %2 == 1){
+    Node* temp = odds;
+    addNode(in, odds, temp);
+  }
+  // detating in node
+  in = nullptr;
+  in = inNext;
+  split(in, odds, evens);
+
 }
 
 /* If you needed a helper function, write it here */
+void addNode(Node*& inNode, Node*& inList, Node*& temp){
+  
+  // if input list is empty, put input node directly on input list
+  if(inList == nullptr){
+    inList = inNode;
+    inNode->next = nullptr;
+    return;
+  }
+
+  // if at end of input list, adding on next node
+  if(temp->next == nullptr){
+    temp->next = inNode;
+    inNode->next = nullptr;
+    return;
+  }
+
+  // if not at end of input list, 
+  //traverse list until can put on
+  else{
+    addNode(inNode, inList, temp->next);
+  }
+  
+}
